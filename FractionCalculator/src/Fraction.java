@@ -67,8 +67,8 @@ public class Fraction {
     }
     public boolean equals(Fraction other){
         if (other instanceof Fraction){
-            other = (Fraction) other;
-            if(other.toDouble() == this.toDouble()){
+            other.toLowestTerms();;
+            if(other.getNumerator() == this.getNumerator() && other.getDenominator()== this.getDenominator()){
                 return true;
             }
             else{
@@ -82,13 +82,15 @@ public class Fraction {
     public void toLowestTerms(){
         int a = this.numerator;
         int b = this.denominator;
-        while(this.numerator != 0 && this.denominator != 0){
+        while(a != 0 && b != 0){
             int temp = a;
             a= b;
-            b = a%temp;
+            b = temp%a;
         }
-        this.numerator =this.numerator/a;
-        this.denominator = this.denominator/a;
+        if(a != 0){
+            this.numerator =this.numerator/a;
+            this.denominator = this.denominator/a;
+        }
     }
     public static int gcd(int number1, int number2){
         while(number1 != 0 && number2 != 0){

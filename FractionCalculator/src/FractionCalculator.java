@@ -1,9 +1,51 @@
 import java.util.*;
+
+import javax.naming.spi.DirStateFactory.Result;
 public class FractionCalculator {
     public static void main(String[] args){
-        System.out.println("This program is fraction calculator\nIt will add, subtract, mutiply, and divide fraction until you type Q to quit.");
-        System.out.println("Please enter your fractions int the form a/b, where a and b are interger.");
-        getOperation();
+        String operation;
+        do{
+            System.out.println("This program is fraction calculator\nIt will add, subtract, mutiply, and divide fraction until you type Q to quit.");
+            System.out.println("Please enter your fractions int the form a/b, where a and b are interger.");
+            operation = getOperation();
+            if(operation.toUpperCase().equals("Q")){
+                break;
+            }
+            Fraction a1 = getFraction();
+            Fraction a2 ;
+            do{
+                a2 = getFraction();
+                if(a2.getNumerator() == 0 && operation.equals("/")){
+                    System.out.println("The second fraction is not zero");
+                }
+            } while(a2.getNumerator() == 0 && operation.equals("/"));
+            Fraction result;
+            if(operation.equals("+")){
+                result = a1.add(a2);
+                result.toLowestTerms();
+                System.out.println(a1 +" "+ operation +" "+ a2 +  " = " + result );
+            }
+            else if(operation.equals("-")){
+                result = a1.subtract(a2);
+                result.toLowestTerms();
+                System.out.println(a1 +" "+ operation +" "+ a2 +  " = " + result );
+            }
+            else if(operation.equals("*")){
+                result = a1.multiply(a2);
+                result.toLowestTerms();
+                System.out.println(a1 +" "+ operation +" "+ a2 +  " = " + result );
+            }
+            else if(operation.equals("/")){
+                result = a1.divide(a2);
+                result.toLowestTerms();
+                System.out.println(a1 +" "+ operation +" "+ a2 +  " = " + result );
+            }
+            else if (operation.equals("=")){
+                Boolean results = a1.equals(a2);
+                System.out.println(a1 +" "+ operation +" "+ a2 +  " is "+ results );
+            }
+        } while(true);
+        
     } 
     public static String  getOperation(){
         Scanner input = new Scanner(System.in);
@@ -20,15 +62,15 @@ public class FractionCalculator {
         }
     }
     public static boolean validFraction(String fraction){
-        Scanner input = new Scanner(System.in);
-        fraction = input.nextLine();
+//        Scanner input = new Scanner(System.in);
+//        fraction = input.nextLine();
         String[] splits = new String[2];
         if(fraction.isEmpty()){
             return false;
         }
         if(fraction.contains("/") ){
             splits = fraction.split("/",2); // split string to {"numorator","denominator"}
-            if(splits[1].length() ==1){
+            if(splits.length ==1){
                 if (Integer.valueOf(splits[1])== 0){
                     return false;
                 }
@@ -57,11 +99,11 @@ public class FractionCalculator {
     }
     public static boolean isNumber(String s){
         for( int i=0; i<s.length(); i++){
-            if(Character.isDigit(s.charAt(i))){
-                return true;
+            if(Character.isDigit(s.charAt(i)) == false){
+                return false;
             }
         }
-        return false;
+        return true;
     }
     public static Fraction getFraction(){
         int num;
@@ -82,7 +124,6 @@ public class FractionCalculator {
             num = Integer.valueOf(num_de[0]);
         }
         Fraction a = new Fraction(num, de);
-        a.toLowestTerms();
         return a;
     }
 }
